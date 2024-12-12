@@ -12,11 +12,11 @@ const Register = () => {
         formState: { errors },
     } = useForm();
     const navigate = useNavigate();
-    
+
 
 
     const onSubmit = (data) => {
-        createUser (data.email, data.password)
+        createUser(data.email, data.password)
         navigate("/")
     };
 
@@ -83,6 +83,21 @@ const Register = () => {
                                 <p className="text-red-500">{errors.confirmPassword.message}</p>
                             )}
                         </div>
+                        {/* ROLE */}
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Role</span>
+                            </label>
+                            <select
+                                className="select select-bordered w-full max-w-xs"
+                                {...register("role", { required: "Role is required" })}
+                            >
+                                <option value="buyer">Buyer</option>
+                                <option value="seller">Seller</option>
+                            </select>
+                            {errors.role && <p className="text-red-500">{errors.role.message}</p>} {/* Error handling */}
+                        </div>
+
                         <div className="form-control mt-6">
                             <button className="btn btn-primary" type="submit">
                                 Register
