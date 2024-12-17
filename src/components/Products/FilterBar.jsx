@@ -1,7 +1,7 @@
 import { GrPowerReset } from "react-icons/gr";
 import { TbFilter } from "react-icons/tb";
 
-const FilterBar = () => {
+const FilterBar = ({ setBrand, setCategory, handleReset }) => {
     return (
         <div className='bg-gray-200 h-full min-h-screen p-4 rounded-t-md'>
             <div className='flex items-center gap-1'>
@@ -10,7 +10,7 @@ const FilterBar = () => {
             </div>
             <div className="mt-8 flex flex-col items-center gap-2">
                 <div className="w-full">
-                    <select className="p-[11px] select w-full border-black max-w-md">
+                    <select className="p-[11px] select w-full border-black max-w-md" onChange={(e) => setBrand(e.target.value)}>
                         <option disabled selected>Brand</option>
                         <option>Homer</option>
                         <option>Marge</option>
@@ -20,7 +20,7 @@ const FilterBar = () => {
                     </select>
                 </div>
                 <div className="w-full">
-                    <select className="p-[11px] select w-full border-black max-w-md">
+                    <select className="p-[11px] select w-full border-black max-w-md" onChange={(e) => setCategory(e.target.value)}>
                         <option disabled selected>Category</option>
                         <option>Homer</option>
                         <option>Marge</option>
@@ -29,7 +29,7 @@ const FilterBar = () => {
                         <option>Maggie</option>
                     </select>
                 </div>
-                <button className="btn w-full mt-4 btn-outline btn-primary flex items-center">
+                <button className="btn w-full mt-4 btn-outline btn-primary flex items-center" onClick={handleReset}>
                     <p>Reset</p>
                     <GrPowerReset>
                     </GrPowerReset>
