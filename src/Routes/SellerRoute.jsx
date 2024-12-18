@@ -4,7 +4,7 @@ import Loading from "../pages/Loading";
 import useUserData from "../hooks/useUserData";
 
 
-const PrivateRoute = ({ children }) => {
+const SellerRoute = ({ children }) => {
     const { user, loading } = useAuth();
     const { userData } = useUserData();
     const location = useLocation();
@@ -17,9 +17,9 @@ const PrivateRoute = ({ children }) => {
         return children
     }
 
-    return <Navigate to='/' state={{ from: location }} replace></Navigate>
+    return <Navigate to='/login' state={{ from: location }} replace></Navigate>
 
 
 };
 
-export default PrivateRoute;
+export default SellerRoute;

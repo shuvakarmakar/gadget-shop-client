@@ -5,6 +5,7 @@ import SortByPrice from "../components/SortByPrice";
 import axios from "axios";
 import Loading from "./Loading";
 import ProductCard from "../components/ProductCard";
+import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight } from "react-icons/fa";
 
 const Products = () => {
     const [allproducts, setAllproducts] = useState([]); // Array to store products
@@ -15,17 +16,20 @@ const Products = () => {
     const [category, setCategory] = useState(""); // Category filter
     const [uniqueBrand, setUniqueBrand] = useState([]); // Unique brands list for filter
     const [uniqueCategory, setUniqueCategory] = useState([]); // Unique categories list for filter
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
 
     useEffect(() => {
         setLoading(true);
         const fetch = async () => {
             try {
-                const response = await axios.get(`http://localhost:4000/all-products?title=${search}&sort=${sort}&brand=${brand}&category=${category}`);
+                const response = await axios.get(`http://localhost:4000/all-products?title=${search}&page=${page}&limit=9&sort=${sort}&brand=${brand}&category=${category}`);
                 // console.log(response.data); // Log the response to inspect
                 // Set the state with the products, brands, and categories
                 setAllproducts(response.data.products || []);  // Use products from response
                 setUniqueBrand(response.data.brands || []);    // Use brands from response
                 setUniqueCategory(response.data.categories || []); // Use categories from response
+                setTotalPage(Math.ceil(response.data.totalProducts / 9))
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching products:", error);
@@ -35,7 +39,7 @@ const Products = () => {
         };
 
         fetch();
-    }, [search, sort, brand, category]); // Dependencies for refetching when state changes
+    }, [search, sort, brand, category, page]); // Dependencies for refetching when state changes
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -50,6 +54,13 @@ const Products = () => {
         setSort("asc");
         window.location.reload(); // Reset and reload the page
     };
+
+    const handlePageChange = (newPage) => {
+        if (newPage > 0 && newPage <= totalPage) {
+            setPage(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+    }
 
     return (
         <div className="container mx-auto">
@@ -98,6 +109,16 @@ const Products = () => {
                             </>
                         )
                     }
+                    {/* Pagination */}
+                    <div className="flex justify-center gap-2 my-8 items-center">
+                        <button className="p-2 border rounded-full border-black" onClick={() => handlePageChange(page - 1)}>
+                            <FaRegArrowAltCircleLeft></FaRegArrowAltCircleLeft>
+                        </button>
+                        <p>Page {page} of {totalPage}</p>
+                        <button className="p-2 border rounded-full border-black" onClick={() => handlePageChange(page + 1)}>
+                            <FaRegArrowAltCircleRight></FaRegArrowAltCircleRight>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

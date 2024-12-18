@@ -1,6 +1,32 @@
+import axios from "axios";
+import useUserData from "../hooks/useUserData";
+import Swal from "sweetalert2";
+
 /* eslint-disable react/prop-types */
 const ProductCard = ({ product }) => {
     if (!product || Object.keys(product).length === 0) return null; // Defensive check
+
+    const userData = useUserData();
+    const userEmail = userData.email;
+
+    const handleWishlist = async () => {
+        await axios.patch("http://localhost:4000/wishlist/add", {
+            userEmail: userEmail,
+            productId: product._id
+        }).then((res) => {
+            if (res.data.modifiedCount) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Product Added to Your Cart Successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+        )
+    }
+
 
     return (
         <div className="rounded-md border-1 shadow-md">
@@ -26,7 +52,7 @@ const ProductCard = ({ product }) => {
                         : `${product.description?.slice(0, 50) || "No Description"}...`}
                 </p>
                 <div>
-                    <button className="btn mt-4 w-full btn-sm">Buy Now</button>
+                    <button onClick={handleWishlist} className="btn mt-4 w-full btn-sm">Add To Wishlist</button>
                 </div>
             </div>
         </div>

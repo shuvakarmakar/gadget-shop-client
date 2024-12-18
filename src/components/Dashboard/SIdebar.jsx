@@ -6,6 +6,7 @@ import useUserData from "../../hooks/useUserData";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import useAuth from "../../hooks/useAuth";
+import { FaRegHeart } from "react-icons/fa";
 
 
 const SellerRoutes = [
@@ -20,6 +21,14 @@ const SellerRoutes = [
         route: "/dashboard/add-products",
         title: "Add Products",
         icon: <IoMdAddCircleOutline></IoMdAddCircleOutline>
+    }
+]
+const BuyerRoutes = [
+    {
+        id: 1,
+        route: "/dashboard/wishlist",
+        title: "My Wishlist",
+        icon: <FaRegHeart></FaRegHeart>
     }
 ]
 
@@ -41,6 +50,17 @@ const SIdebar = () => {
                 {
                     userData.role === "seller" &&
                     SellerRoutes.map((route) => (
+                        <li key={route.id} className="p-2 border border-black rounded-md">
+                            <NavLink to={route.route} className="flex items-center gap-2">
+                                {route.icon}
+                                <p>{route.title}</p>
+                            </NavLink>
+                        </li>
+                    ))
+                }
+                {
+                    userData.role === "buyer" &&
+                    BuyerRoutes.map((route) => (
                         <li key={route.id} className="p-2 border border-black rounded-md">
                             <NavLink to={route.route} className="flex items-center gap-2">
                                 {route.icon}
